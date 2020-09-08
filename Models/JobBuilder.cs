@@ -42,10 +42,20 @@ namespace QuartzNETDependencyInversionSample.Models
             return this;
         }
 
+        public JobBuilder WithData(JobData data)
+        {
+            JobData = data;
+
+            return this;
+        }
+
         public void Build()
         {
             if (Job == null)
                 throw new ArgumentNullException(nameof(Job));
+
+            if (JobData == null)
+                throw new ArgumentNullException(nameof(JobData));
         }
     }
 }
