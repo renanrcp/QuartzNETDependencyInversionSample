@@ -33,6 +33,13 @@ namespace QuartzNETDependencyInversionSample.Extensions
                 {
                     jobOptions.AllowDefaultConstructor = false;
                 });
+
+                quartzOptions.UseSimpleTypeLoader();
+                quartzOptions.UseInMemoryStore();
+                quartzOptions.UseDefaultThreadPool(tp =>
+                {
+                    tp.MaxConcurrency = 9000;
+                });
             });
 
             services.TryAddTransient<GenericQuartzJob>();
