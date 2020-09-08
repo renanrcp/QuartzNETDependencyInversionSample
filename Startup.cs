@@ -13,6 +13,8 @@ namespace QuartzNETDependencyInversionSample
             {
                 options.WaitForAllJobsCompleteWhenAppCloses = false;
             });
+
+            services.AddHostedService<SampleWorkerService>();
         }
     }
 }

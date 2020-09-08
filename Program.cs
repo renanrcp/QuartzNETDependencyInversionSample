@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QuartzNETDependencyInversionSample.Extensions;
 
 namespace QuartzNETDependencyInversionSample
 {
@@ -15,6 +16,7 @@ namespace QuartzNETDependencyInversionSample
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args);
+            Host.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
     }
 }

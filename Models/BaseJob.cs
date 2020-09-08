@@ -7,6 +7,11 @@ namespace QuartzNETDependencyInversionSample.Models
     {
         private readonly IJobScheduler _jobScheduler;
 
+        protected BaseJob(IJobScheduler jobScheduler)
+        {
+            _jobScheduler = jobScheduler;
+        }
+
         public virtual JobData Data { get; set; }
 
         public abstract Task ExecuteAsync();
