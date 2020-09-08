@@ -25,7 +25,7 @@ namespace QuartzNETDependencyInversionSample.Jobs
 
         public Task<DateTime?> GetNextDateAsync()
         {
-            DateTime? nextDate = DateTimeOffset.UtcNow.AddSeconds(30).Date;
+            DateTime? nextDate = DateTime.Now.AddSeconds(10);
 
             return Task.FromResult(nextDate);
         }

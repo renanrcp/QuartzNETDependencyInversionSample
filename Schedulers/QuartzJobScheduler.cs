@@ -23,11 +23,12 @@ namespace QuartzNETDependencyInversionSample.Schedulers
         public Task<bool> JobExistsAsync(string jobName, string jobGroup)
             => Scheduler.CheckExists(new JobKey(jobName, jobGroup));
 
-        public Task ScheduleJobAsync(InternalBuilder jobBuilder)
+        public async Task ScheduleJobAsync(InternalBuilder jobBuilder)
         {
             jobBuilder.Build();
 
             var jobKey = new JobKey(jobBuilder.JobData.JobName, jobBuilder.JobData.JobGroup);
+            var triggerKey = new TriggerKey(jobBuilder.JobData.TriggerName, jobBuilder.JobData.JobGroup);
 
             var data = new JobDataMap();
 
@@ -39,7 +40,7 @@ namespace QuartzNETDependencyInversionSample.Schedulers
                                 .Build();
 
             var triggerBuilder = TriggerBuilder.Create()
-                                .WithIdentity(jobBuilder.JobData.TriggerName, jobBuilder.JobData.JobGroup);
+                                .WithIdentity(triggerKey);
 
             if (jobBuilder.JobStartDate.HasValue)
                 triggerBuilder = triggerBuilder.StartAt((DateTimeOffset)jobBuilder.JobStartDate.Value);
@@ -67,7 +68,14 @@ namespace QuartzNETDependencyInversionSample.Schedulers
                                     .Build();
             }
 
-            return Scheduler.ScheduleJob(job, trigger);
+            if (await Scheduler.CheckExists(jobKey))
+            {
+                await Scheduler.RescheduleJob(triggerKey, trigger);
+            }
+            else
+            {
+                await Scheduler.ScheduleJob(job, trigger);
+            }
         }
 
         public async Task StartAsync(CancellationToken cancellationToken = default)

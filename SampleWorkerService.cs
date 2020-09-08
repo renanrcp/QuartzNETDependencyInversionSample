@@ -22,8 +22,9 @@ namespace QuartzNETDependencyInversionSample
             var jobData = new JobData("testJob1", "testJobTrigger1", "test");
 
             var jobBuilder = new JobBuilder()
-                                    .WithDelay(TimeSpan.FromSeconds(10))
                                     .WithInfinite(true)
+                                    .WithStartDate(DateTime.Now.AddSeconds(10))
+                                    .WithDelay(TimeSpan.FromSeconds(10))
                                     .WithJob<TestJob>()
                                     .WithData(jobData);
 
