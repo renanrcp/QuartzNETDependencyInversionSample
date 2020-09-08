@@ -22,11 +22,6 @@ namespace QuartzNETDependencyInversionSample.Extensions
             else
                 services.AddOptions<JobSchedulerOptions>();
 
-            services.AddSingleton<JobSchedulerOptions>(sp =>
-            {
-                return (JobSchedulerOptions)sp.GetRequiredService<IOptions<JobSchedulerOptions>>();
-            });
-
             services.AddQuartz(quartzOptions =>
             {
                 quartzOptions.UseMicrosoftDependencyInjectionJobFactory(jobOptions =>

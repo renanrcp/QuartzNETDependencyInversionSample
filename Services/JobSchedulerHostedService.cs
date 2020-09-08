@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using QuartzNETDependencyInversionSample.Models;
 using QuartzNETDependencyInversionSample.Schedulers;
 
@@ -11,10 +12,10 @@ namespace QuartzNETDependencyInversionSample.Services
         private readonly IJobScheduler _jobScheduler;
         private readonly JobSchedulerOptions _options;
 
-        public JobSchedulerHostedService(IJobScheduler jobScheduler, JobSchedulerOptions options)
+        public JobSchedulerHostedService(IJobScheduler jobScheduler, IOptions<JobSchedulerOptions> options)
         {
             _jobScheduler = jobScheduler;
-            _options = options;
+            _options = options.Value;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
