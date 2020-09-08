@@ -4,7 +4,9 @@ namespace QuartzNETDependencyInversionSample.Models
 {
     public interface IJob
     {
-        Task ExecuteAsync(JobData data);
+        JobData Data { get; set; }
+
+        Task ExecuteAsync();
 
         Task CancelAsync();
     }

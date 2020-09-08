@@ -13,5 +13,7 @@ namespace QuartzNETDependencyInversionSample.Schedulers
         Task ScheduleJobAsync(JobBuilder jobBuilder);
 
         Task<bool> JobExistsAsync(string jobName, string jobGroup);
+
+        Task CancelJobAsync(string jobName, string jobGroup);
     }
 }

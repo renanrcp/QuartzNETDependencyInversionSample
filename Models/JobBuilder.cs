@@ -12,11 +12,12 @@ namespace QuartzNETDependencyInversionSample.Models
 
         public JobData JobData { get; private set; }
 
-        public IJob Job { get; private set; }
+        public Type JobType { get; private set; }
 
-        public JobBuilder WithJob(IJob job)
+        public JobBuilder WithJob<T>()
+            where T : class, IJob
         {
-            Job = job;
+            JobType = typeof(T);
 
             return this;
         }
@@ -51,11 +52,14 @@ namespace QuartzNETDependencyInversionSample.Models
 
         public void Build()
         {
-            if (Job == null)
-                throw new ArgumentNullException(nameof(Job));
+            if (JobType == null)
+                throw new ArgumentNullException(nameof(JobType));
 
             if (JobData == null)
                 throw new ArgumentNullException(nameof(JobData));
+
+            if (typeof(IDateJob).IsAssignableFrom(JobType) && !JobStartDate.HasValue)
+                throw new InvalidOperationException($"Can't created an {nameof(IDateJob)} without the {nameof(JobStartDate)} setted.");
         }
     }
 }
