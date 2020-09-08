@@ -19,6 +19,8 @@ namespace QuartzNETDependencyInversionSample.Jobs
         {
             _logger.LogInformation("TestJob executed.");
 
+            //return CancelAsync();
+
             return Task.CompletedTask;
         }
     }
