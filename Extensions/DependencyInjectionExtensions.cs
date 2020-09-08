@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Quartz;
 using QuartzNETDependencyInversionSample.Internal;
 using QuartzNETDependencyInversionSample.Models;
@@ -14,12 +15,17 @@ namespace QuartzNETDependencyInversionSample.Extensions
         public static IServiceCollection AddJobSchedulerHostedService(this IServiceCollection services)
             => services.AddHostedService<JobSchedulerHostedService>();
 
-        public static IServiceCollection AddQuartzNetForScheduler(this IServiceCollection services, Action<JobSchedulerOptions> options)
+        public static IServiceCollection AddQuartzNetForScheduler(this IServiceCollection services, Action<JobSchedulerOptions> options = null)
         {
             if (options != null)
                 services.Configure(options);
             else
                 services.AddOptions<JobSchedulerOptions>();
+
+            services.AddSingleton<JobSchedulerOptions>(sp =>
+            {
+                return (JobSchedulerOptions)sp.GetRequiredService<IOptions<JobSchedulerOptions>>();
+            });
 
             services.AddQuartz(quartzOptions =>
             {
