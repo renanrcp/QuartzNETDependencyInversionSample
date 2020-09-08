@@ -34,7 +34,8 @@ namespace QuartzNETDependencyInversionSample.Schedulers
             data.Add("builder", jobBuilder);
 
             var job = JobBuilder.Create<GenericQuartzJob>()
-                                .WithIdentity(jobBuilder.JobData.JobName, jobBuilder.JobData.JobGroup)
+                                .WithIdentity(jobKey)
+                                .UsingJobData(data)
                                 .Build();
 
             var triggerBuilder = TriggerBuilder.Create()
