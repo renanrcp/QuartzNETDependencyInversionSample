@@ -7,6 +7,7 @@ namespace QuartzNETDependencyInversionSample
     {
         public void ConfigureServices(IServiceCollection services)
         {
+
         }
     }
 }
