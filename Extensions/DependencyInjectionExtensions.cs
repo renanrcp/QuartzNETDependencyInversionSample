@@ -49,5 +49,11 @@ namespace QuartzNETDependencyInversionSample.Extensions
 
             return services;
         }
+
+        public static IServiceCollection AddExceptionJobListener<TListener>(this IServiceCollection services)
+            where TListener : class, IJobExceptionListener
+        {
+            return services.AddSingleton<IJobExceptionListener, TListener>();
+        }
     }
 }
