@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Quartz;
 using QuartzNETDependencyInversionSample.Internal;
+using QuartzNETDependencyInversionSample.Listeners;
 using QuartzNETDependencyInversionSample.Models;
 using QuartzNETDependencyInversionSample.Schedulers;
 using QuartzNETDependencyInversionSample.Services;
@@ -44,6 +45,7 @@ namespace QuartzNETDependencyInversionSample.Extensions
 
             services.TryAddTransient<GenericQuartzJob>();
             services.TryAddSingleton<IJobScheduler, QuartzJobScheduler>();
+            services.TryAddSingleton<QuartzExceptionJobListener>();
 
             return services;
         }

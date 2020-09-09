@@ -2,7 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Quartz;
+using Quartz.Impl.Matchers;
 using QuartzNETDependencyInversionSample.Internal;
+using QuartzNETDependencyInversionSample.Listeners;
 using QuartzNETDependencyInversionSample.Models;
 using InternalBuilder = QuartzNETDependencyInversionSample.Models.JobBuilder;
 using JobBuilder = Quartz.JobBuilder;
@@ -12,13 +14,15 @@ namespace QuartzNETDependencyInversionSample.Schedulers
     internal sealed class QuartzJobScheduler : IJobScheduler
     {
         private readonly ISchedulerFactory _schedulerFactory;
+        private readonly QuartzExceptionJobListener _exceptionListener;
 
-        private IScheduler Scheduler { get; set; }
-
-        public QuartzJobScheduler(ISchedulerFactory schedulerFactory)
+        public QuartzJobScheduler(ISchedulerFactory schedulerFactory, QuartzExceptionJobListener exceptionListener)
         {
             _schedulerFactory = schedulerFactory;
+            _exceptionListener = exceptionListener;
         }
+
+        private IScheduler Scheduler { get; set; }
 
         public Task<bool> JobExistsAsync(string jobName, string jobGroup)
             => Scheduler.CheckExists(new JobKey(jobName, jobGroup));
@@ -83,6 +87,8 @@ namespace QuartzNETDependencyInversionSample.Schedulers
             Scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
             await Scheduler.Start(cancellationToken);
+
+            Scheduler.ListenerManager.AddJobListener(_exceptionListener, GroupMatcher<JobKey>.AnyGroup());
         }
 
         public Task StopAsync(bool waitForCompletion, CancellationToken cancellationToken = default)

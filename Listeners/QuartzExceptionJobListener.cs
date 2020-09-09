@@ -6,7 +6,7 @@ using Quartz;
 
 namespace QuartzNETDependencyInversionSample.Listeners
 {
-    public class QuartzExceptionJobListener : IJobListener
+    internal sealed class QuartzExceptionJobListener : IJobListener
     {
         private readonly IEnumerable<IJobExceptionListener> _expceptionListeners;
 
