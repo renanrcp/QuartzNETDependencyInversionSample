@@ -21,6 +21,7 @@ namespace QuartzNETDependencyInversionSample.Listeners
 
         public Task JobExecutionVetoed(IJobExecutionContext context, CancellationToken cancellationToken = default)
             => Task.CompletedTask;
+
         public Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken = default)
             => Task.CompletedTask;
 
@@ -31,7 +32,9 @@ namespace QuartzNETDependencyInversionSample.Listeners
             if (exception == null)
                 return Task.CompletedTask;
 
-            var tasks = _expceptionListeners.Select(a => a.HandleExceptionAsync(exception, cancellationToken));
+            var tasks = _expceptionListeners
+                            .Select(a => a.HandleExceptionAsync(exception, cancellationToken))
+                            .ToList();
 
             return Task.WhenAll(tasks);
         }
