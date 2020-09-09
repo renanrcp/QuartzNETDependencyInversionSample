@@ -7,6 +7,7 @@ using InternalJob = QuartzNETDependencyInversionSample.Models.IJob;
 using InternalBuilder = QuartzNETDependencyInversionSample.Models.JobBuilder;
 using QuartzJob = Quartz.IJob;
 using QuartzNETDependencyInversionSample.Schedulers;
+using QuartzNETDependencyInversionSample.Extensions;
 
 namespace QuartzNETDependencyInversionSample.Internal
 {
@@ -23,7 +24,7 @@ namespace QuartzNETDependencyInversionSample.Internal
 
         public Task Execute(IJobExecutionContext context)
         {
-            var builder = context.JobDetail.JobDataMap["builder"] as InternalBuilder;
+            var builder = context.GetJobBuilder();
 
             using var scope = _serviceScopeFactory.CreateScope();
 

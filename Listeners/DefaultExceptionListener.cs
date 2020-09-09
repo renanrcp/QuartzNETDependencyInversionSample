@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using QuartzNETDependencyInversionSample.Models;
 
 namespace QuartzNETDependencyInversionSample.Listeners
 {
@@ -14,7 +15,7 @@ namespace QuartzNETDependencyInversionSample.Listeners
             _logger = logger;
         }
 
-        public Task HandleExceptionAsync(Exception jobException, CancellationToken cancellationToken = default)
+        public Task HandleExceptionAsync(JobBuilder jobBuilder, Exception jobException, CancellationToken cancellationToken = default)
         {
             _logger.LogError(jobException, "An error occurred while executing a job.");
 

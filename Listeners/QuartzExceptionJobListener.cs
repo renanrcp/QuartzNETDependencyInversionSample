@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Quartz;
+using QuartzNETDependencyInversionSample.Extensions;
+using InternalBuilder = QuartzNETDependencyInversionSample.Models.JobBuilder;
 
 namespace QuartzNETDependencyInversionSample.Listeners
 {
@@ -32,8 +34,10 @@ namespace QuartzNETDependencyInversionSample.Listeners
             if (exception == null)
                 return Task.CompletedTask;
 
+            var builder = context.GetJobBuilder();
+
             var tasks = _expceptionListeners
-                            .Select(a => a.HandleExceptionAsync(exception, cancellationToken))
+                            .Select(a => a.HandleExceptionAsync(builder, exception, cancellationToken))
                             .ToList();
 
             return Task.WhenAll(tasks);
