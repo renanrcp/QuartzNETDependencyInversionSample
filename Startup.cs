@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using QuartzNETDependencyInversionSample.Extensions;
+using QuartzNETDependencyInversionSample.Listeners;
 using QuartzNETDependencyInversionSample.Models;
 
 namespace QuartzNETDependencyInversionSample
@@ -13,6 +14,7 @@ namespace QuartzNETDependencyInversionSample
             {
                 options.WaitForAllJobsCompleteWhenAppCloses = false;
             });
+            services.AddExceptionJobListener<DefaultExceptionListener>();
 
             services.AddHostedService<SampleWorkerService>();
         }

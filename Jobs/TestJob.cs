@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using QuartzNETDependencyInversionSample.Models;
@@ -19,9 +20,11 @@ namespace QuartzNETDependencyInversionSample.Jobs
         {
             _logger.LogInformation("TestJob executed.");
 
+            throw new Exception("Sample exception");
+
             //return CancelAsync();
 
-            return Task.CompletedTask;
+            //return Task.CompletedTask;
         }
     }
 }
